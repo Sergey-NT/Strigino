@@ -337,7 +337,7 @@ public class Fragment extends android.support.v4.app.Fragment {
 
     private void sendDeleteQueryToDb(String... params) {
         String timePlane = Uri.encode(params[3]);
-        String url = "http://www.avtovokzal.org/php/app_koltsovo/deleteQuery.php?token="+params[0]+"&direction="+params[1]+"&flight="+params[2]+"&time_plan="+timePlane;
+        String url = "http://www.avtovokzal.org/php/app_strigino/deleteQuery.php?token="+params[0]+"&direction="+params[1]+"&flight="+params[2]+"&time_plan="+timePlane;
 
         StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -357,7 +357,7 @@ public class Fragment extends android.support.v4.app.Fragment {
         String timePlane = Uri.encode(params[4]);
         String timeFact = Uri.encode(params[5]);
         String status = Uri.encode(params[6]);
-        String url = "http://www.avtovokzal.org/php/app_koltsovo/query.php?token="+params[0]+"&direction="+params[1]+"&flight="+params[2]+"&plane_direction="+planeDirection+"&time_plan="+timePlane+"&time_fact="+timeFact+"&status="+status+"&language="+language;
+        String url = "http://www.avtovokzal.org/php/app_strigino/query.php?token="+params[0]+"&direction="+params[1]+"&flight="+params[2]+"&plane_direction="+planeDirection+"&time_plan="+timePlane+"&time_fact="+timeFact+"&status="+status+"&language="+language;
 
         StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -460,7 +460,7 @@ public class Fragment extends android.support.v4.app.Fragment {
         String token = settings.getString(Constants.APP_TOKEN, "");
 
         if (token.length() > 0) {
-            String url = "http://www.avtovokzal.org/php/app_koltsovo/requestQuery.php?token="+token;
+            String url = "http://www.avtovokzal.org/php/app_strigino/requestQuery.php?token="+token;
 
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
@@ -737,8 +737,8 @@ public class Fragment extends android.support.v4.app.Fragment {
         Arrays.sort(unique);
         for (final String title : unique) {
             final FloatingActionButton fab = new FloatingActionButton(getActivity().getApplication());
-            fab.setColorNormalResId(R.color.colorPrimary);
-            fab.setColorPressedResId(R.color.colorPrimaryDark);
+            fab.setColorNormalResId(R.color.colorAccent);
+            fab.setColorPressedResId(R.color.colorAccentDark);
             fab.setTitle(title);
 
             fab.setIconDrawable(new IconicsDrawable(getActivity().getApplication())

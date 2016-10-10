@@ -316,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getVersionFromGooglePlay() {
-        String url = "http://www.avtovokzal.org/php/app_koltsovo/requestVersionCode.php";
+        String url = "http://www.avtovokzal.org/php/app_strigino/requestVersionCode.php";
 
         StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override

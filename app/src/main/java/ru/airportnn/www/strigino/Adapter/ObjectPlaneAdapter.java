@@ -411,6 +411,12 @@ public class ObjectPlaneAdapter extends BaseAdapter implements Filterable {
             case "NN-":
                 holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_vim_airlines));
                 break;
+            case "DXT":
+                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_dexter));
+                break;
+            case "UVT":
+                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_uvt_aero));
+                break;
             default:
                 holder.imageViewLogo.setVisibility(View.GONE);
                 break;
