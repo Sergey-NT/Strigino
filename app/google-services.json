@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "886310795465",
+    "firebase_url": "https://strigino-c13a1.firebaseio.com",
+    "project_id": "strigino-c13a1",
+    "storage_bucket": "strigino-c13a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:886310795465:android:a72a92998d77283f",
+        "android_client_info": {
+          "package_name": "ru.airportnn.www.strigino"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "886310795465-3iq3f5n0k8chetep446omqcn6pkfq5tp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [{ "current_key": "" }],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
