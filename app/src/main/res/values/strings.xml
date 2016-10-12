@@ -16,7 +16,7 @@
     <string name="about_developer">Разработчик приложения: <a href="http://vk.com/id5170658" title="Сергей Ухарский">Сергей Ухарский</a></string>
     <string name="about_version">Версия приложения:</string>
     <string name="about_text">В приложении используются следующие иконки:
-        Airplane outline free icon made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>
+        Airplane free icon made by <a href="http://www.flaticon.com/authors/pixel-buddha" title="Pixel Buddha">Pixel Buddha</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
     </string>
     <string name="about_text_content">Источник данных: <a href="http://www.airportnn.ru" title="www.airportnn.ru">www.airportnn.ru</a></string>
     <string name="info_route_desc">Маршрут</string>
@@ -70,7 +70,7 @@
     <string name="button_clear_edit_text">Очистить</string>
     <string name="image_tracking" translatable="false">Отслеживать изменения</string>
     <string name="image_logo" translatable="false">Логотип компании</string>
-    <string name="ad_view_banner" translatable="false">ca-app-pub-3253485608797245/4635220305</string>
+    <string name="ad_view_banner" translatable="false">ca-app-pub-3253485608797245/7258245104</string>
     <string name="analytics_category_button" translatable="false">Button</string>
     <string name="analytics_action_ads_disable" translatable="false">Отключение рекламы</string>
     <string name="analytics_action_ads_disable_recovery" translatable="false">Восстановление покупки</string>

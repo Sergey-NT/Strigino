@@ -29,8 +29,8 @@ public class SettingsActivity extends AppCompatActivity implements BillingProces
 
     private static final int LAYOUT = R.layout.activity_settings;
 
-    private static final String PRODUCT_ID = "www.koltsovo.ru.ads.disable";
-    private static final String LICENSE_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg0wiLxwMYZZz1j0bDvnDcO/BjSZV2qB3zTNhXB73c9GrPaed3HujZQbqpDr8MGmq50wil6egznh4eH2k28/Ym3LXJQutORp1CvVs64tlU0k6egGEtOdZXhQxFGGvOKtaiFRfc/kXa7qDzwY9g5ar5sgi0ny1JTql/6GRnAsHFnNxJmMzwX2pSANlZh74AREdfR5jTdyjAaar4mrG9Cx4So2Z1lmIRsw9uoBDF7CzBT6EaFgHsVXExZIGP/rOfDfBqrAgUZZ/CmjrpB2rGYlyLPKxpG6kyS7ideMnvuX34+UxOZXWiRo6vSG0155O74FFg6X7XqiD0x1eifUElNWwzQIDAQAB";
+    private static final String PRODUCT_ID = "www.airportnn.ru.ads.disable";
+    private static final String LICENSE_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr5+5Gycjt7vs98nW6w9CUpmISMI5rKUw4n5Jn0Ae7jncioUzB2oAmw563gL0hOMMsJHKLLNPBKAySlMygwi4LvLZlEtN3PDSiqxOd0D5G6+3qv7MAczRlsARmLQN+HN6+lc0jx1E84UkVH0sOr2lvZtbjxNO/TvZLwvoT7TApAcnGrURSrWiuFtiq6YiGTDCGD3+pHAB4M1eWHGpgLSXRptNXLYfsEhyQMYQ0OfK9QDgUTVKJ238FyX5vZ9XFxDwRjw3FnU0WlKoSiERKZMA9EGffc7fYtemppjdIWx3bfUEFir3sT6uu21R4W+hl5ZdiPX9CNZaIgnJIYjA+RkGuQIDAQAB";
     private static final String MERCHANT_ID = "09670604812027174402";
 
     private BillingProcessor bp;

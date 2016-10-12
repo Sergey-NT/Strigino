@@ -44,7 +44,6 @@ import org.json.JSONObject;
 import ru.airportnn.www.strigino.Adapter.TabsPagerFragmentAdapter;
 import ru.airportnn.www.strigino.Fragment.InfoDialogFragment;
 import ru.airportnn.www.strigino.Fragment.UpdateDialogFragment;
-import ru.airportnn.www.strigino.gcm.RegistrationIntentService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         settings = getSharedPreferences(Constants.APP_PREFERENCES, Context.MODE_PRIVATE);
         boolean adDisable = settings.getBoolean(Constants.APP_PREFERENCES_ADS_DISABLE, false);
 
-        if (adDisable) {
+        if (!adDisable) {
             initAd(R.id.main_activity_layout);
         }
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
@@ -83,10 +82,7 @@ public class MainActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {}
         };
 
-        if (checkPlayServices()) {
-            Intent intent = new Intent(this, RegistrationIntentService.class);
-            startService(intent);
-        }
+        checkPlayServices();
 
         if (!getSettingsParams(Constants.APP_PREFERENCES_SHOW_DIALOG)) {
             FragmentManager manager = getSupportFragmentManager();

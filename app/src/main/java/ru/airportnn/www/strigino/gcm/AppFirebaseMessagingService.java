@@ -7,31 +7,30 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.google.android.gms.gcm.GcmListenerService;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
 import ru.airportnn.www.strigino.Constants;
 import ru.airportnn.www.strigino.MainActivity;
 import ru.airportnn.www.strigino.R;
 
-public class AppGcmListenerService extends GcmListenerService {
+public class AppFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String TAG = "AppGcmListenerService";
+    private static final String TAG = "FirebaseMessaging";
 
     @Override
-    public void onMessageReceived(String from, Bundle data) {
+    public void onMessageReceived(RemoteMessage remoteMessage) {
         int icon;
 
-        String message = data.getString("message");
-        String planeNumber = data.getString("title");
-        String direction = data.getString("direction");
-        String title = getString(R.string.plane_desc_flight) + " " + planeNumber + " " + data.getString("plane_direction");
+        String message = remoteMessage.getData().get("message");
+        String planeNumber = remoteMessage.getData().get("title");
+        String direction = remoteMessage.getData().get("direction");
+        String title = getString(R.string.plane_desc_flight) + " " + planeNumber + " " + remoteMessage.getData().get("plane_direction");
 
         if (Constants.LOG_ON) {
-            Log.d(TAG, "From: " + from);
             Log.d(TAG, "Message: " + message);
             Log.d(TAG, "Title: " + title);
             Log.d(TAG, "Plane number: " + planeNumber);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Идентификатор отслеживания Google Analytics -->
-    <string name="ga_trackingId">UA-25056266-4</string>
+    <string name="ga_trackingId">UA-25056266-6</string>
     <!-- Значение true задает автоматическое отслеживание Activity. -->
     <bool name="ga_autoActivityTracking">true</bool>
     <!-- Если значение равно true, неперехваченные исключения будут отслеживаться автоматически. -->
