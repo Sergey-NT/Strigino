@@ -37,7 +37,7 @@ public class UpdateDialogFragment extends DialogFragment {
                 .setPositiveButton(getString(R.string.dialog_button_positive_update), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setData(Uri.parse("market://details?id=ru.koltsovo.www.koltsovo"));
+                        intent.setData(Uri.parse("market://details?id=ru.airportnn.www.strigino"));
                         startActivity(intent);
 
                         dialog.cancel();

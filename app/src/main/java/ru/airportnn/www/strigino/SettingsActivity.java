@@ -244,7 +244,7 @@ public class SettingsActivity extends AppCompatActivity implements BillingProces
                 .build());
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("market://details?id=ru.koltsovo.www.koltsovo"));
+        intent.setData(Uri.parse("market://details?id=ru.airportnn.www.strigino"));
         startActivity(intent);
     }
 

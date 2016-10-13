@@ -1,9 +1,11 @@
 package ru.airportnn.www.strigino;
 
+import android.annotation.TargetApi;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Build;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,7 +31,7 @@ public class AppController extends Application {
     private static AppController mInstance;
 
     // Google Analytics
-    private static final String PROPERTY_ID = "UA-25056266-4";
+    private static final String PROPERTY_ID = "UA-25056266-6";
 
     public enum TrackerName {
         APP_TRACKER, GLOBAL_TRACKER,
@@ -72,7 +74,11 @@ public class AppController extends Application {
         locale = new Locale(language);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
-        config.locale = locale;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            setSystemLocale(config, locale);
+        }else{
+            setSystemLocaleLegacy(config, locale);
+        }
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
 
@@ -82,7 +88,11 @@ public class AppController extends Application {
 
         if (locale != null) {
             Configuration config = new Configuration(newConfig);
-            config.locale = locale;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                setSystemLocale(config, locale);
+            }else{
+                setSystemLocaleLegacy(config, locale);
+            }
             Locale.setDefault(locale);
             getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
         }
@@ -109,5 +119,15 @@ public class AppController extends Application {
             Class.forName("android.os.AsyncTask");
         }
         catch(Throwable ignore) {}
+    }
+
+    @SuppressWarnings("deprecation")
+    public void setSystemLocaleLegacy(Configuration config, Locale locale){
+        config.locale = locale;
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    public void setSystemLocale(Configuration config, Locale locale){
+        config.setLocale(locale);
     }
 }

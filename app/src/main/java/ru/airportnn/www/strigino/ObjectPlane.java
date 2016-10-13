@@ -2,25 +2,25 @@ package ru.airportnn.www.strigino;
 
 public class ObjectPlane {
 
-    public String planeFlight;
-    public String planeDirection;
-    public String planeType;
-    public String planeTimePlan;
-    public String planeTimeFact;
-    public String planeStatus;
-    public String planeBaggageStatus;
-    public String planeGate;
-    public String planeCheckIn;
-    public String planeCombination;
-    public String planeRoute;
-    public String planeRouteStatus;
-    public String planeAirline;
-    public String registrationBegin;
-    public String registrationEnd;
-    public String checkInStatus;
-    public String boardingStatus;
-    public String boardingEnd;
-    public boolean planeTracking;
+    private String planeFlight;
+    private String planeDirection;
+    private String planeType;
+    private String planeTimePlan;
+    private String planeTimeFact;
+    private String planeStatus;
+    private String planeBaggageStatus;
+    private String planeGate;
+    private String planeCheckIn;
+    private String planeCombination;
+    private String planeRoute;
+    private String planeRouteStatus;
+    private String planeAirline;
+    private String registrationBegin;
+    private String registrationEnd;
+    private String checkInStatus;
+    private String boardingStatus;
+    private String boardingEnd;
+    private boolean planeTracking;
 
     public ObjectPlane(String planeFlight, String planeDirection, String planeType, String planeTimePlan, String planeTimeFact, String planeStatus, boolean planeTracking, String planeBaggageStatus, String planeGate, String planeCheckIn, String planeCombination, String planeRoute, String planeRouteStatus, String registrationBegin, String registrationEnd, String checkInStatus, String boardingEnd, String boardingStatus, String planeAirline) {
         this.planeFlight = planeFlight;
