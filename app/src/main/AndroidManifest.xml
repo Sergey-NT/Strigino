@@ -37,7 +37,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:theme="@style/AppLauncherTheme"
             android:configChanges="orientation|screenSize|locale"
             android:launchMode="singleTask"
             android:taskAffinity=".MainActivity"

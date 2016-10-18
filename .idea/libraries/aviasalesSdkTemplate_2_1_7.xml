@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="aviasalesSdkTemplate-2.1.7">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/ru.aviasales.template/aviasalesSdkTemplate/2.1.7/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/ru.aviasales.template/aviasalesSdkTemplate/2.1.7/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
