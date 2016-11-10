@@ -1,5 +1,6 @@
 package ru.airportnn.www.strigino;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,10 +25,12 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import ru.airportnn.www.strigino.Fragment.LanguageFragment;
+import ru.airportnn.www.strigino.Fragment.ThemeDialogFragment;
 
 public class SettingsActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler {
 
     private static final int LAYOUT = R.layout.activity_settings;
+    private static final int APP_THEME = R.style.AppDefault;
 
     private static final String PRODUCT_ID = "www.airportnn.ru.ads.disable";
     private static final String LICENSE_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr5+5Gycjt7vs98nW6w9CUpmISMI5rKUw4n5Jn0Ae7jncioUzB2oAmw563gL0hOMMsJHKLLNPBKAySlMygwi4LvLZlEtN3PDSiqxOd0D5G6+3qv7MAczRlsARmLQN+HN6+lc0jx1E84UkVH0sOr2lvZtbjxNO/TvZLwvoT7TApAcnGrURSrWiuFtiq6YiGTDCGD3+pHAB4M1eWHGpgLSXRptNXLYfsEhyQMYQ0OfK9QDgUTVKJ238FyX5vZ9XFxDwRjw3FnU0WlKoSiERKZMA9EGffc7fYtemppjdIWx3bfUEFir3sT6uu21R4W+hl5ZdiPX9CNZaIgnJIYjA+RkGuQIDAQAB";
@@ -43,7 +46,10 @@ public class SettingsActivity extends AppCompatActivity implements BillingProces
     @Override
     @SuppressWarnings("ConstantConditions")
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setTheme(R.style.AppDefault);
+        settings = getSharedPreferences(Constants.APP_PREFERENCES, Context.MODE_PRIVATE);
+        int appTheme = settings.getInt(Constants.APP_PREFERENCES_APP_THEME, APP_THEME);
+        setTheme(appTheme);
+
         super.onCreate(savedInstanceState);
         setContentView(LAYOUT);
 
@@ -59,7 +65,6 @@ public class SettingsActivity extends AppCompatActivity implements BillingProces
         Button btnFeedback = (Button) findViewById(R.id.btnFeedback);
         CheckBox checkBoxUpdate = (CheckBox) findViewById(R.id.checkBoxUpdate);
 
-        settings = getSharedPreferences(Constants.APP_PREFERENCES, Context.MODE_PRIVATE);
         Boolean update = settings.getBoolean(Constants.APP_PREFERENCES_CANCEL_CHECK_VERSION, false);
         String price = settings.getString(Constants.APP_PREFERENCES_ADS_DISABLE_PRICE, "");
         String buttonPriceText = getString(R.string.button_ads_disable) + " " + price;
@@ -243,14 +248,24 @@ public class SettingsActivity extends AppCompatActivity implements BillingProces
                 .setAction(getString(R.string.analytics_action_feedback))
                 .build());
 
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("market://details?id=ru.airportnn.www.strigino"));
-        startActivity(intent);
+        Uri uri = Uri.parse("market://details?id=" + getPackageName());
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            showToast(getString(R.string.toast_error_google_play));
+        }
     }
 
-    public void bntLanguageOnClick (View view) {
+    public void btnLanguageOnClick (View view) {
         FragmentManager manager = getSupportFragmentManager();
         LanguageFragment dialogFragment = new LanguageFragment();
+        dialogFragment.show(manager, "dialog");
+    }
+
+    public void btnThemeOnClick (View view) {
+        FragmentManager manager = getSupportFragmentManager();
+        ThemeDialogFragment dialogFragment = new ThemeDialogFragment();
         dialogFragment.show(manager, "dialog");
     }
 

@@ -37,6 +37,7 @@
     <string name="dialog_title">Информация</string>
     <string name="dialog_title_new_version">Новая версия</string>
     <string name="dialog_title_language">Выбор языка</string>
+    <string name="dialog_title_theme">Выбор темы оформления</string>
     <string name="dialog_message">Для того чтобы получать Push уведомления об изменениях в статусе выбранного рейса, удерживайте выбранный рейс до вибрации телефона. Чтобы отключить отслеживание повторно удержите рейс.</string>
     <string name="dialog_message_new_version">В магазине приложений Google Play появилась новая версия. Обновите приложение Стригино до последней версии.</string>
     <string name="dialog_button_positive">Больше не показывать</string>
@@ -47,9 +48,16 @@
     <string name="dialog_button_negative_language">Отмена</string>
     <string name="menu_about">О приложении</string>
     <string name="menu_settings">Настройки</string>
+    <string name="menu_other_airports">Другие аэропорты</string>
+    <string name="menu_koltsovo">Кольцово</string>
+    <string name="menu_koltsovo_subtitle">г.Екатеринбург</string>
+    <string name="menu_kurumoch">Курумоч</string>
+    <string name="menu_kurumoch_subtitle">г.Самара</string>
+    <string name="menu_rostov_on_don">Ростов-на-Дону</string>
     <string name="menu_info_title">Дополнительная информация</string>
     <string name="menu_info_subtitle">Рейс:</string>
     <string name="menu_title">аэропорт Стригино</string>
+    <string name="menu_title_right">Онлайн табло аэропорта</string>
     <string name="menu_ads_disable_toast">Оплата за отключение показа рекламы прошла успешно.</string>
     <string name="menu_billing_not_initialized">Биллинг не инициализирован.</string>
     <string name="menu_ads_ads_disable_recovery_true">Покупка восстановлена.</string>
@@ -58,6 +66,8 @@
     <string name="toast_plane_departure">Рейс вылетел отслеживание информации невозможно</string>
     <string name="toast_plane_tracking">Включено отслеживание информации</string>
     <string name="toast_cancel_plane_tracking">Отслеживание информации отключено</string>
+    <string name="toast_token">Произошла ошибка при регистрации отслеживания</string>
+    <string name="toast_error_google_play">Приложение Google Play не найдено</string>
     <string name="check_box_update_app">Отменить проверку наличия новой версии при выходе из приложения</string>
     <string name="check_box_language_ru" translatable="false">Русский</string>
     <string name="check_box_language_en" translatable="false">English</string>
@@ -71,6 +81,7 @@
     <string name="image_tracking" translatable="false">Отслеживать изменения</string>
     <string name="image_logo" translatable="false">Логотип компании</string>
     <string name="ad_view_banner" translatable="false">ca-app-pub-3253485608797245/7258245104</string>
+    <string name="app_identifier" translatable="false">ca-app-pub-3253485608797245~5781511906</string>
     <string name="analytics_category_button" translatable="false">Button</string>
     <string name="analytics_action_ads_disable" translatable="false">Отключение рекламы</string>
     <string name="analytics_action_ads_disable_recovery" translatable="false">Восстановление покупки</string>
