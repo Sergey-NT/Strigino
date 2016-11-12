@@ -77,5 +77,4 @@
     <string name="menu_title_right">Online flight info</string>
     <string name="menu_other_airports">Other airports</string>
     <string name="dialog_title_theme">Themes</string>
-    <string name="toast_error_google_play">Google Play app not found</string>
 </resources>
