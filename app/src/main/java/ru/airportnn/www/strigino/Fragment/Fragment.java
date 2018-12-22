@@ -1,5 +1,6 @@
 package ru.airportnn.www.strigino.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -12,8 +13,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -66,10 +69,15 @@ import ru.airportnn.www.strigino.InfoActivity;
 import ru.airportnn.www.strigino.ObjectPlane;
 import ru.airportnn.www.strigino.R;
 
-public class Fragment extends android.support.v4.app.Fragment {
+public class Fragment extends androidx.fragment.app.Fragment {
 
     private static final int LAYOUT = R.layout.fragment;
     private static final String TAG = "Fragment";
+    private static final String DELETE_QUERY_URL = "https://www.avtovokzal.org/php/app_strigino/deleteQuery.php?token=";
+    private static final String SEND_QUERY_URL = "https://www.avtovokzal.org/php/app_strigino/query.php?token=";
+    private static final String GET_XML_URL = "http://www.airportnn.ru/1linetablo.card.5.19.php?0&0&";
+    private static final String GET_QUERY_URL = "https://www.avtovokzal.org/php/app_strigino/requestQuery.php?token=";
+    private static final Integer RESPONSE_SUBSTRING = 61;
 
     private List<ObjectPlane> list;
     private ListView listView;
@@ -99,28 +107,29 @@ public class Fragment extends android.support.v4.app.Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         String planeNumber;
 
         View view = inflater.inflate(LAYOUT, container, false);
 
         // Google Analytics
-        Tracker t = ((AppController) getActivity().getApplication()).getTracker(AppController.TrackerName.APP_TRACKER);
+        Tracker t = ((AppController) requireActivity().getApplication()).getTracker(AppController.TrackerName.APP_TRACKER);
         t.enableAdvertisingIdCollection(true);
 
         list = new ArrayList<>();
-        listView = (ListView) view.findViewById(R.id.listView);
-        textView = (TextView) view.findViewById(R.id.tvNoInternet);
-        btnRepeat = (Button) view.findViewById(R.id.btnRepeat);
-        btnClearEditText = (ImageButton) view.findViewById(R.id.btnClearEditText);
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fragment_swipe_refresh);
-        editText = (EditText) view.findViewById(R.id.searchListView);
+        listView = view.findViewById(R.id.listView);
+        textView = view.findViewById(R.id.tvNoInternet);
+        btnRepeat = view.findViewById(R.id.btnRepeat);
+        btnClearEditText = view.findViewById(R.id.btnClearEditText);
+        swipeRefreshLayout = view.findViewById(R.id.fragment_swipe_refresh);
+        editText = view.findViewById(R.id.searchListView);
+        assert getArguments() != null;
         direction = getArguments().getString("direction");
         planeNumber = getArguments().getString("planeNumber");
-        settings = getActivity().getSharedPreferences(Constants.APP_PREFERENCES, Context.MODE_PRIVATE);
+        settings = requireActivity().getSharedPreferences(Constants.APP_PREFERENCES, Context.MODE_PRIVATE);
         language = settings.getString(Constants.APP_PREFERENCES_LANGUAGE, "ru");
         activateBackground = settings.getBoolean(Constants.APP_PREFERENCES_ACTIVATE_BACKGROUND, false);
-        floatingActionsMenu = (FloatingActionsMenu) view.findViewById(R.id.fam);
+        floatingActionsMenu = view.findViewById(R.id.fam);
 
         clearEditTextListener();
         editTextListeners();
@@ -140,7 +149,7 @@ public class Fragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 // Google Analytics
-                Tracker t = ((AppController) getActivity().getApplication()).getTracker(AppController.TrackerName.APP_TRACKER);
+                Tracker t = ((AppController) requireActivity().getApplication()).getTracker(AppController.TrackerName.APP_TRACKER);
                 t.send(new HitBuilders.EventBuilder()
                         .setCategory(getString(R.string.analytics_category_button))
                         .setAction(getString(R.string.analytics_action_clear_text))
@@ -199,7 +208,7 @@ public class Fragment extends android.support.v4.app.Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Google Analytics
-                Tracker t = ((AppController) getActivity().getApplication()).getTracker(AppController.TrackerName.APP_TRACKER);
+                Tracker t = ((AppController) requireActivity().getApplication()).getTracker(AppController.TrackerName.APP_TRACKER);
                 t.send(new HitBuilders.EventBuilder()
                         .setCategory(getString(R.string.analytics_category_button))
                         .setAction(getString(R.string.analytics_action_plane_info))
@@ -227,7 +236,7 @@ public class Fragment extends android.support.v4.app.Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 // Google Analytics
-                Tracker t = ((AppController) getActivity().getApplication()).getTracker(AppController.TrackerName.APP_TRACKER);
+                Tracker t = ((AppController) requireActivity().getApplication()).getTracker(AppController.TrackerName.APP_TRACKER);
                 t.send(new HitBuilders.EventBuilder()
                         .setCategory(getString(R.string.analytics_category_button))
                         .setAction(getString(R.string.analytics_action_plane_tacking))
@@ -246,8 +255,11 @@ public class Fragment extends android.support.v4.app.Fragment {
                 String planeTimeFact = tvPlaneTimeFact.getText().toString();
                 String planeStatus = tvPlaneStatus.getText().toString().substring(0,1) + tvPlaneStatus.getText().toString().substring(1).toLowerCase();
 
-                Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-                vibrator.vibrate(50);
+
+                Vibrator vibrator = (Vibrator) requireActivity().getSystemService(Context.VIBRATOR_SERVICE);
+                if (vibrator != null) {
+                    vibrator.vibrate(50);
+                }
 
                 switch (planeStatus) {
                     case "Прибыл":
@@ -344,7 +356,7 @@ public class Fragment extends android.support.v4.app.Fragment {
     private void sendDeleteQueryToDb(String... params) {
         String token = params[0];
         String timePlane = Uri.encode(params[3]);
-        String url = "http://www.avtovokzal.org/php/app_strigino/deleteQuery.php?token="+token+"&direction="+params[1]+"&flight="+params[2]+"&time_plan="+timePlane;
+        String url = DELETE_QUERY_URL + token + "&direction=" + params[1] + "&flight=" + params[2] + "&time_plan=" + timePlane;
 
         if (token.length() > 0) {
             StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -372,7 +384,7 @@ public class Fragment extends android.support.v4.app.Fragment {
         String timeFact = Uri.encode(params[5]);
         String status = Uri.encode(params[6]);
         if (token.length() > 0) {
-            String url = "http://www.avtovokzal.org/php/app_strigino/query.php?token=" + token + "&direction=" + params[1] + "&flight=" + params[2] + "&plane_direction=" + planeDirection + "&time_plan=" + timePlane + "&time_fact=" + timeFact + "&status=" + status + "&language=" + language;
+            String url = SEND_QUERY_URL + token + "&direction=" + params[1] + "&flight=" + params[2] + "&plane_direction=" + planeDirection + "&time_plan=" + timePlane + "&time_fact=" + timeFact + "&status=" + status + "&language=" + language;
 
             StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
@@ -393,8 +405,10 @@ public class Fragment extends android.support.v4.app.Fragment {
     }
 
     private void hideSoftKeyboard () {
-        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+        InputMethodManager inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (inputMethodManager != null) {
+            inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+        }
         editText.clearFocus();
     }
 
@@ -404,7 +418,7 @@ public class Fragment extends android.support.v4.app.Fragment {
             @Override
             public void onRefresh() {
                 // Google Analytics
-                Tracker t = ((AppController) getActivity().getApplication()).getTracker(AppController.TrackerName.APP_TRACKER);
+                Tracker t = ((AppController) requireActivity().getApplication()).getTracker(AppController.TrackerName.APP_TRACKER);
                 t.send(new HitBuilders.EventBuilder()
                         .setCategory(getString(R.string.analytics_category_button))
                         .setAction(getString(R.string.analytics_action_refresh))
@@ -446,13 +460,13 @@ public class Fragment extends android.support.v4.app.Fragment {
         progressDialog.setCancelable(true);
         progressDialog.show();
 
-        String url = "http://www.airportnn.ru/1linetablo.card.5.19.php?0&0&"+direction;
+        String url = GET_XML_URL + direction;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if (response != null) {
-                    response = response.substring(61);
+                    response = response.substring(RESPONSE_SUBSTRING);
                     response = response.replace("</teaxtarea>","");
                     parsingXML task = new parsingXML();
                     task.execute(response, direction);
@@ -479,7 +493,7 @@ public class Fragment extends android.support.v4.app.Fragment {
         String token = settings.getString(Constants.APP_TOKEN, "");
 
         if (token.length() > 0) {
-            String url = "http://www.avtovokzal.org/php/app_strigino/requestQuery.php?token="+token;
+            String url = GET_QUERY_URL + token;
 
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
@@ -519,6 +533,7 @@ public class Fragment extends android.support.v4.app.Fragment {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class parsingXML extends AsyncTask<String, Void, List<ObjectPlane>> {
         @Override
         protected List<ObjectPlane> doInBackground(String... params) {
@@ -704,7 +719,7 @@ public class Fragment extends android.support.v4.app.Fragment {
                     parser.next();
                 }
             } catch (XmlPullParserException | IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
+                requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         progressDialogDismiss();
@@ -724,8 +739,8 @@ public class Fragment extends android.support.v4.app.Fragment {
                 return;
             }
 
-            if (list == null || list.size() == 0) {
-                getActivity().runOnUiThread(new Runnable() {
+            if ((list == null || list.size() == 0)) {
+                requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         progressDialogDismiss();
@@ -733,13 +748,14 @@ public class Fragment extends android.support.v4.app.Fragment {
                     }
                 });
             } else {
-                if (adapter == null) {
-                    adapter = new ObjectPlaneAdapter(getActivity().getApplicationContext(), list);
+                if (adapter == null ) {
+                    adapter = new ObjectPlaneAdapter(requireActivity().getApplicationContext(), list);
                     listView.setAdapter(adapter);
                     adapter.getFilter().filter(editText.getText().toString());
                     getQueryFromServer();
                 } else {
                     adapter.notifyDataSetChanged();
+                    adapter.getFilter().filter(editText.getText().toString());
                     getQueryFromServer();
                 }
             }
@@ -755,12 +771,12 @@ public class Fragment extends android.support.v4.app.Fragment {
         final String[] unique = new HashSet<>(dates).toArray(new String[0]);
         Arrays.sort(unique);
         for (final String title : unique) {
-            final FloatingActionButton fab = new FloatingActionButton(getActivity().getApplication());
+            final FloatingActionButton fab = new FloatingActionButton(requireActivity().getApplication());
             fab.setColorNormalResId(R.color.colorPrimaryGreen);
             fab.setColorPressedResId(R.color.colorPrimaryDarkGreen);
             fab.setTitle(title);
 
-            fab.setIconDrawable(new IconicsDrawable(getActivity().getApplication())
+            fab.setIconDrawable(new IconicsDrawable(requireActivity().getApplication())
                     .icon(GoogleMaterial.Icon.gmd_date_range)
                     .color(Color.WHITE)
                     .sizeDp(24));
@@ -780,8 +796,11 @@ public class Fragment extends android.support.v4.app.Fragment {
     }
 
     private boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        ConnectivityManager cm = (ConnectivityManager) requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = null;
+        if (cm != null) {
+            netInfo = cm.getActiveNetworkInfo();
+        }
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
@@ -799,7 +818,7 @@ public class Fragment extends android.support.v4.app.Fragment {
             public void onClick(View v) {
                 if (isOnline()) {
                     // Google Analytics
-                    Tracker t = ((AppController) getActivity().getApplication()).getTracker(AppController.TrackerName.APP_TRACKER);
+                    Tracker t = ((AppController) requireActivity().getApplication()).getTracker(AppController.TrackerName.APP_TRACKER);
                     t.send(new HitBuilders.EventBuilder()
                             .setCategory(getString(R.string.analytics_category_button))
                             .setAction(getString(R.string.analytics_action_repeat))
@@ -815,12 +834,16 @@ public class Fragment extends android.support.v4.app.Fragment {
     }
 
     private void showToast(String message) {
-        Toast.makeText(getActivity().getApplication(), message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireActivity().getApplication(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(Constants.APP_PREFERENCES_UPDATE_LIST_FLAG, true);
+        editor.apply();
         progressDialogDismiss();
     }
 
@@ -836,6 +859,10 @@ public class Fragment extends android.support.v4.app.Fragment {
         if (adapter != null & activateBackground != settings.getBoolean(Constants.APP_PREFERENCES_ACTIVATE_BACKGROUND, false)) {
             activateBackground = settings.getBoolean(Constants.APP_PREFERENCES_ACTIVATE_BACKGROUND, false);
             adapter.notifyDataSetChanged();
+        }
+        if (adapter != null && settings.getBoolean(Constants.APP_PREFERENCES_UPDATE_LIST_FLAG, false)) {
+            uploadListView();
+            progressDialogDismiss();
         }
     }
 }

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="5dp"
-        android:background="?attr/backgroundColor"
+        android:background="?android:attr/colorBackground"
         tools:ignore="UnusedAttribute">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -43,7 +43,8 @@
                 android:hint="@string/edit_text_hint"
                 android:textColorHint="@color/colorDivider"
                 android:maxLines="1"
-                android:ellipsize="end" />
+                android:ellipsize="end"
+                android:importantForAutofill="no" />
 
             <ImageButton
                 android:id="@+id/btnClearEditText"
@@ -92,7 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
-        <android.support.v4.widget.SwipeRefreshLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/fragment_swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
@@ -104,7 +105,7 @@
                 android:divider="@color/colorDivider"
                 android:dividerHeight="1sp" />
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <net.i2p.android.ext.floatingactionbutton.FloatingActionsMenu
             android:layout_width="wrap_content"

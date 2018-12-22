@@ -3,7 +3,7 @@ package ru.airportnn.www.strigino.Adapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +13,9 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,27 +111,27 @@ public class ObjectPlaneAdapter extends BaseAdapter implements Filterable {
 
             holder = new ViewHolder();
 
-            holder.itemFlight = (TextView) view.findViewById(R.id.tvPlaneFlight);
-            holder.itemDirection = (TextView) view.findViewById(R.id.tvPlaneDirection);
-            holder.itemType = (TextView) view.findViewById(R.id.tvPlaneType);
-            holder.itemTimePlan = (TextView) view.findViewById(R.id.tvPlaneTimePlan);
-            holder.itemTimeFact = (TextView) view.findViewById(R.id.tvPlaneTimeFact);
-            holder.itemStatus = (TextView) view.findViewById(R.id.tvPlaneStatus);
-            holder.itemBaggageStatus = (TextView) view.findViewById(R.id.tvPlaneBaggage);
-            holder.itemGate = (TextView) view.findViewById(R.id.tvPlaneGate);
-            holder.itemCheckIn = (TextView) view.findViewById(R.id.tvPlaneCheckIn);
-            holder.itemCheckInBegin = (TextView) view.findViewById(R.id.tvPlaneCheckInBegin);
-            holder.itemCheckInEnd = (TextView) view.findViewById(R.id.tvPlaneCheckInEnd);
-            holder.itemCombination = (TextView) view.findViewById(R.id.tvPlaneCombination);
-            holder.descriptionStatus = (TextView) view.findViewById(R.id.tvPlaneStatusDesc);
-            holder.descriptionBaggage = (TextView) view.findViewById(R.id.tvPlaneBaggageDesc);
-            holder.descriptionGate = (TextView) view.findViewById(R.id.tvPlaneGateDesc);
-            holder.descriptionCheckIn = (TextView) view.findViewById(R.id.tvPlaneCheckInDesc);
-            holder.descriptionCheckInBegin = (TextView) view.findViewById(R.id.tvPlaneCheckInBeginDesc);
-            holder.descriptionCheckInEnd = (TextView) view.findViewById(R.id.tvPlaneCheckInEndDesc);
-            holder.imageViewTracking = (ImageView) view.findViewById(R.id.imageTracking);
-            holder.imageViewLogo = (ImageView) view.findViewById(R.id.imageLogo);
-            holder.relativeLayout = (RelativeLayout) view.findViewById(R.id.listViewItem);
+            holder.itemFlight = view.findViewById(R.id.tvPlaneFlight);
+            holder.itemDirection = view.findViewById(R.id.tvPlaneDirection);
+            holder.itemType = view.findViewById(R.id.tvPlaneType);
+            holder.itemTimePlan = view.findViewById(R.id.tvPlaneTimePlan);
+            holder.itemTimeFact = view.findViewById(R.id.tvPlaneTimeFact);
+            holder.itemStatus = view.findViewById(R.id.tvPlaneStatus);
+            holder.itemBaggageStatus = view.findViewById(R.id.tvPlaneBaggage);
+            holder.itemGate = view.findViewById(R.id.tvPlaneGate);
+            holder.itemCheckIn = view.findViewById(R.id.tvPlaneCheckIn);
+            holder.itemCheckInBegin = view.findViewById(R.id.tvPlaneCheckInBegin);
+            holder.itemCheckInEnd = view.findViewById(R.id.tvPlaneCheckInEnd);
+            holder.itemCombination = view.findViewById(R.id.tvPlaneCombination);
+            holder.descriptionStatus = view.findViewById(R.id.tvPlaneStatusDesc);
+            holder.descriptionBaggage = view.findViewById(R.id.tvPlaneBaggageDesc);
+            holder.descriptionGate = view.findViewById(R.id.tvPlaneGateDesc);
+            holder.descriptionCheckIn = view.findViewById(R.id.tvPlaneCheckInDesc);
+            holder.descriptionCheckInBegin = view.findViewById(R.id.tvPlaneCheckInBeginDesc);
+            holder.descriptionCheckInEnd = view.findViewById(R.id.tvPlaneCheckInEndDesc);
+            holder.imageViewTracking = view.findViewById(R.id.imageTracking);
+            holder.imageViewLogo = view.findViewById(R.id.imageLogo);
+            holder.relativeLayout = view.findViewById(R.id.listViewItem);
             holder.activateBackground = settings.getBoolean(Constants.APP_PREFERENCES_ACTIVATE_BACKGROUND, false);
 
             view.setTag(holder);
@@ -263,205 +266,19 @@ public class ObjectPlaneAdapter extends BaseAdapter implements Filterable {
         return view;
     }
 
-    private void setAirlineLogo(ViewHolder holder) {
-        switch (holder.itemFlight.getText().toString().substring(0,3)) {
-            case "DP-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_pobeda));
-                break;
-            case "7R-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_rusline));
-                break;
-            case "SU-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_aeroflot));
-                break;
-            case "U6-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_ural_airlines));
-                break;
-            case "KL-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_klm));
-                break;
-            case "IB-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_iberia));
-                break;
-            case "9U-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_air_moldova));
-                break;
-            case "BA-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_british_airways));
-                break;
-            case "S7-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_s7_airlines));
-                break;
-            case "AB-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_air_berlin));
-                break;
-            case "TP-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_tap_portugal));
-                break;
-            case "EY-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_etihad_airways));
-                break;
-            case "YC-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_ymal));
-                break;
-            case "KO-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_komiaviatrans));
-                break;
-            case "AF-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_air_france));
-                break;
-            case "A3-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_aegean_airlines));
-                break;
-            case "LY-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_el_al));
-                break;
-            case "UT-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_utair));
-                break;
-            case "FV-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_rossia));
-                break;
-            case "R2-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_orenair));
-                break;
-            case "J2-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_azal));
-                break;
-            case "OK-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_czech_airlines));
-                break;
-            case "AZ-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_alitalia));
-                break;
-            case "B2-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_belavia));
-                break;
-            case "AY-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_finnair));
-                break;
-            case "O7-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_orenburgie));
-                break;
-            case "Y7-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_nordstar_airlines));
-                break;
-            case "KC-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_air_astana));
-                break;
-            case "FZ-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_fly_dubai));
-                break;
-            case "4G-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_gazpromavia));
-                break;
-            case "7J-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_tajikair));
-                break;
-            case "ZF-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_azur_air));
-                break;
-            case "6R-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_alrosa));
-                break;
-            case "D9-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_donavia));
-                break;
-            case "JL-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_japan_airlines));
-                break;
-            case "5B-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_euro_asia_air));
-                break;
-            case "6Z-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_euro_asia_air));
-                break;
-            case "GH-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_globus));
-                break;
-            case "TK-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_turkish_airlines));
-                break;
-            case "ZM-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_air_manas));
-                break;
-            case "R3-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_yakutia));
-                break;
-            case "SZ-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_somon_air));
-                break;
-            case "YK-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_avia_traffic_company));
-                break;
-            case "HY-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_uzbekistan_airways));
-                break;
-            case "4R-":
-            case "RL-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_royal_flight));
-                break;
-            case "RU-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_air_bridge_cargo));
-                break;
-            case "ZG-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_grozny_avia));
-                break;
-            case "IK-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_pegas_fly));
-                break;
-            case "EK-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_emirates));
-                break;
-            case "D2-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_severstal_avia));
-                break;
-            case "TRH":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_turuhan));
-                break;
-            case "I4-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_i_fly));
-                break;
-            case "EL-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_ellinair));
-                break;
-            case "WZ-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_red_wings));
-                break;
-            case "N4-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_nordwind_airlines));
-                break;
-            case "4B-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_aviastar_tu));
-                break;
-            case "QR-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_qatar_airways));
-                break;
-            case "QH-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_air_kyrgyzstan));
-                break;
-            case "KK-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_atlasjet_airlines));
-                break;
-            case "8Q-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_onur_air));
-                break;
-            case "I8-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_igavia));
-                break;
-            case "NN-":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_vim_airlines));
-                break;
-            case "DXT":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_dexter));
-                break;
-            case "UVT":
-                holder.imageViewLogo.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.drawable_logo_uvt_aero));
-                break;
-            default:
+    private void setAirlineLogo(final ViewHolder holder) {
+        String string = holder.itemFlight.getText().toString().toLowerCase();
+        String[] split = string.split("-");
+        String imageFileName = split[0];
+        Picasso.get().load("https://www.avtovokzal.org/image_android/" + imageFileName + ".png").into(holder.imageViewLogo, new Callback() {
+            @Override
+            public void onSuccess() {}
+
+            @Override
+            public void onError(Exception e) {
                 holder.imageViewLogo.setVisibility(View.GONE);
-                break;
-        }
+            }
+        });
     }
 
     private ObjectPlane getObjectPlane(int i) {

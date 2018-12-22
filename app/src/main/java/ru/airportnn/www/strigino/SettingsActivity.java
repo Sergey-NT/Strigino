@@ -1,5 +1,6 @@
 package ru.airportnn.www.strigino;
 
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -7,10 +8,12 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -57,14 +60,14 @@ public class SettingsActivity extends AppCompatActivity implements BillingProces
         Tracker t = ((AppController) getApplication()).getTracker(AppController.TrackerName.APP_TRACKER);
         t.enableAdvertisingIdCollection(true);
 
-        initToolbar(R.string.app_name, R.string.menu_settings);
+        initToolbar();
 
-        btnAdsDisable = (Button) findViewById(R.id.btnAdsDisable);
-        Button btnLanguage = (Button) findViewById(R.id.btnLanguage);
-        Button btnAdsDisableRestore = (Button) findViewById(R.id.btnAdsDisableRecovery);
-        Button btnFeedback = (Button) findViewById(R.id.btnFeedback);
-        CheckBox checkBoxUpdate = (CheckBox) findViewById(R.id.checkBoxUpdate);
-        CheckBox checkBoxActivateBackground = (CheckBox) findViewById(R.id.checkBoxActivateBackground);
+        btnAdsDisable = findViewById(R.id.btnAdsDisable);
+        Button btnLanguage = findViewById(R.id.btnLanguage);
+        Button btnAdsDisableRestore = findViewById(R.id.btnAdsDisableRecovery);
+        Button btnFeedback = findViewById(R.id.btnFeedback);
+        CheckBox checkBoxUpdate = findViewById(R.id.checkBoxUpdate);
+        CheckBox checkBoxActivateBackground = findViewById(R.id.checkBoxActivateBackground);
 
         Boolean update = settings.getBoolean(Constants.APP_PREFERENCES_CANCEL_CHECK_VERSION, false);
         Boolean activate = settings.getBoolean(Constants.APP_PREFERENCES_ACTIVATE_BACKGROUND, false);
@@ -113,11 +116,11 @@ public class SettingsActivity extends AppCompatActivity implements BillingProces
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void initToolbar(int title, int subTitle) {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    private void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setTitle(title);
-            toolbar.setSubtitle(subTitle);
+            toolbar.setTitle(R.string.app_name);
+            toolbar.setSubtitle(R.string.menu_settings);
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -139,10 +142,9 @@ public class SettingsActivity extends AppCompatActivity implements BillingProces
     }
 
     @Override
-    public void onProductPurchased(String productId, TransactionDetails details) {
+    public void onProductPurchased(@NonNull String productId, TransactionDetails details) {
         showToast(getString(R.string.menu_ads_disable_toast));
 
-        // Сохраняем в настройках
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean(Constants.APP_PREFERENCES_ADS_DISABLE, true);
         editor.apply();
@@ -167,6 +169,15 @@ public class SettingsActivity extends AppCompatActivity implements BillingProces
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(Constants.APP_PREFERENCES_UPDATE_LIST_FLAG, false);
+        editor.apply();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         GoogleAnalytics.getInstance(this).reportActivityStop(this);
@@ -180,6 +191,7 @@ public class SettingsActivity extends AppCompatActivity implements BillingProces
         super.onDestroy();
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class getSkuDetails extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {

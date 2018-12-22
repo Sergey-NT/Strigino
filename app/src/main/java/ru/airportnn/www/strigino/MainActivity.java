@@ -8,17 +8,22 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.IntentCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.tabs.TabLayout;
+
+import androidx.appcompat.widget.ShareActionProvider;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -36,6 +41,7 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
@@ -56,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final int APP_THEME = R.style.AppDefault;
     private static final String TAG = "MainActivity";
+    private static final String REQUEST_VERSION_APP_URL = "https://www.avtovokzal.org/php/app_strigino/requestVersionCode.php";
+    private static final String SHARE_URL = "https://play.google.com/store/apps/details?id=ru.airportnn.www.strigino&referrer=utm_source%3Dstrigino%26utm_medium%3Dandroid%26utm_campaign%3Dshare";
 
     private Toolbar toolbar;
     private ViewPager viewPager;
@@ -107,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             planeNumber = extras.getString("planeNumber");
         }
 
-        initToolbar(R.string.app_name);
+        initToolbar();
         initTabs();
         initNavigationDrawer();
 
@@ -124,21 +132,46 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void initToolbar(int title) {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+    private void initToolbar() {
+        toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setTitle(title);
+            toolbar.setTitle(R.string.app_name);
             setSupportActionBar(toolbar);
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.share_menu, menu);
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+
+        ShareActionProvider shareActionProvider = new ShareActionProvider(this) {
+            @Override
+            public View onCreateActionView() {
+                return null;
+            }
+        };
+
+        item.setIcon(new IconicsDrawable(this, "gmd_share").actionBar().color(Color.WHITE));
+
+        MenuItemCompat.setActionProvider(item, shareActionProvider);
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.app_name);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, SHARE_URL);
+        shareActionProvider.setShareIntent(shareIntent);
+
+        return true;
+    }
+
     @SuppressWarnings("ConstantConditions")
     private void initTabs() {
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager = findViewById(R.id.viewPager);
         TabsPagerFragmentAdapter adapter = new TabsPagerFragmentAdapter(getApplicationContext(), planeNumber, direction, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -273,6 +306,7 @@ public class MainActivity extends AppCompatActivity {
                                 .withIcon(GoogleMaterial.Icon.gmd_airplanemode_active),
                         new PrimaryDrawerItem()
                                 .withName(R.string.menu_rostov_on_don)
+                                .withDescription(R.string.menu_rostov_on_don_subtitle)
                                 .withIcon(GoogleMaterial.Icon.gmd_airplanemode_active)
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
@@ -282,25 +316,25 @@ public class MainActivity extends AppCompatActivity {
                             case 1:
                                 drawerResultRight.closeDrawer();
                                 try {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getString(R.string.package_koltsovo))));
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getString(R.string.package_koltsovo) + "&" + getString(R.string.utm_campaign_market))));
                                 } catch (ActivityNotFoundException e) {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getString(R.string.package_koltsovo))));
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getString(R.string.package_koltsovo)  + "&" + getString(R.string.utm_campaign_https))));
                                 }
                                 return true;
                             case 2:
                                 drawerResultRight.closeDrawer();
                                 try {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getString(R.string.package_kurumoch))));
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getString(R.string.package_kurumoch) + "&" + getString(R.string.utm_campaign_market))));
                                 } catch (ActivityNotFoundException e) {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getString(R.string.package_kurumoch))));
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getString(R.string.package_kurumoch)  + "&" + getString(R.string.utm_campaign_https))));
                                 }
                                 return true;
                             case 3:
                                 drawerResultRight.closeDrawer();
                                 try {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getString(R.string.package_rostov))));
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getString(R.string.package_rostov) + "&" + getString(R.string.utm_campaign_market))));
                                 } catch (ActivityNotFoundException e) {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getString(R.string.package_rostov))));
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getString(R.string.package_rostov)  + "&" + getString(R.string.utm_campaign_https))));
                                 }
                                 return true;
                         }
@@ -335,29 +369,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        // No call for super(). Bug on API Level > 11.
-    }
-
     @SuppressWarnings("ConstantConditions")
     public void initAd(int layoutId) {
         adView = new AdView(this);
         adView.setAdUnitId(getString(R.string.ad_view_banner));
         adView.setAdSize(AdSize.SMART_BANNER);
 
-        LinearLayout layout = (LinearLayout)findViewById(layoutId);
+        LinearLayout layout = findViewById(layoutId);
         layout.addView(adView);
 
         AdRequest request = new AdRequest.Builder()
                 // Nexus 5
                 .addTestDevice("4B954499F159024FD4EFD592E7A5F658")
-                // Nexus 4 4.4.4
-                .addTestDevice("769FA0ABAACE6F42A12E2AF6BA03F1FC")
-                // Samsung GT-P5200
-                .addTestDevice("36F1281CF85BE19471A7B8BD82141BDF")
-                // Nexus 7
-                .addTestDevice("07B4BB1F6E99054B7ED99CF142644BBD")
                 .build();
 
         adView.loadAd(request);
@@ -413,7 +436,7 @@ public class MainActivity extends AppCompatActivity {
     private void changeActivityAppTheme() {
         finish();
         final Intent intent = getIntent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -428,9 +451,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getVersionFromGooglePlay() {
-        String url = "http://www.avtovokzal.org/php/app_strigino/requestVersionCode.php";
-
-        StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.POST, REQUEST_VERSION_APP_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if (response != null) {
@@ -452,7 +473,7 @@ public class MainActivity extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(strReq);
     }
 
-    private boolean checkPlayServices() {
+    private void checkPlayServices() {
         GoogleApiAvailability api = GoogleApiAvailability.getInstance();
         int resultCode = api.isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
@@ -464,8 +485,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 finish();
             }
-            return false;
         }
-        return true;
     }
 }

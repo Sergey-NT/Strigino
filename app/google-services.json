@@ -15,23 +15,41 @@
       },
       "oauth_client": [
         {
+          "client_id": "886310795465-qgt6ppvlg0qcovfv5a504cn2u1kup8sm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.airportnn.www.strigino",
+            "certificate_hash": "5f51ed71dd404c9fe3f1e2341c1c915ce6f44eca"
+          }
+        },
+        {
           "client_id": "886310795465-3iq3f5n0k8chetep446omqcn6pkfq5tp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
-      "api_key": [{ "current_key": "" }],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCucEI9TcuFuARfMBmQBD5y0dLbYz3WjhE"
+        }
+      ],
       "services": {
         "analytics_service": {
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "886310795465-3iq3f5n0k8chetep446omqcn6pkfq5tp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-3253485608797245~5781511906"
     }
   ],
   "configuration_version": "1"
