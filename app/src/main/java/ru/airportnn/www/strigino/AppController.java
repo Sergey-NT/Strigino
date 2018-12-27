@@ -71,7 +71,7 @@ public class AppController extends Application {
         configureCrashReporting();
         mInstance = this;
 
-        settings = getSharedPreferences(Constants.APP_PREFERENCES, Context.MODE_PRIVATE);
+        settings = getSharedPreferences(Constants.APP_PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean(Constants.APP_PREFERENCES_UPDATE_LIST_FLAG, false);
         editor.apply();

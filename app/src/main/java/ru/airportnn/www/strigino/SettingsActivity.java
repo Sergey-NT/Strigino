@@ -2,11 +2,11 @@ package ru.airportnn.www.strigino;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.SkuDetails;
 import com.anjlab.android.iab.v3.TransactionDetails;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -33,7 +34,6 @@ import ru.airportnn.www.strigino.Fragment.ThemeDialogFragment;
 public class SettingsActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler {
 
     private static final int LAYOUT = R.layout.activity_settings;
-    private static final int APP_THEME = R.style.AppDefault;
 
     private static final String PRODUCT_ID = "www.airportnn.ru.ads.disable";
     private static final String LICENSE_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr5+5Gycjt7vs98nW6w9CUpmISMI5rKUw4n5Jn0Ae7jncioUzB2oAmw563gL0hOMMsJHKLLNPBKAySlMygwi4LvLZlEtN3PDSiqxOd0D5G6+3qv7MAczRlsARmLQN+HN6+lc0jx1E84UkVH0sOr2lvZtbjxNO/TvZLwvoT7TApAcnGrURSrWiuFtiq6YiGTDCGD3+pHAB4M1eWHGpgLSXRptNXLYfsEhyQMYQ0OfK9QDgUTVKJ238FyX5vZ9XFxDwRjw3FnU0WlKoSiERKZMA9EGffc7fYtemppjdIWx3bfUEFir3sT6uu21R4W+hl5ZdiPX9CNZaIgnJIYjA+RkGuQIDAQAB";
@@ -45,15 +45,20 @@ public class SettingsActivity extends AppCompatActivity implements BillingProces
 
     private boolean readyToPurchase = false;
 
-
     @Override
     @SuppressWarnings("ConstantConditions")
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        settings = getSharedPreferences(Constants.APP_PREFERENCES, Context.MODE_PRIVATE);
-        int appTheme = settings.getInt(Constants.APP_PREFERENCES_APP_THEME, APP_THEME);
-        setTheme(appTheme);
+        settings = getSharedPreferences(Constants.APP_PREFERENCES, MODE_PRIVATE);
+        int appTheme = settings.getInt(Constants.APP_PREFERENCES_APP_THEME, Constants.APP_THEME);
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            onApplyThemeResource(getTheme(), appTheme, false);
+        } else {
+            setTheme(appTheme);
+        }
 
         super.onCreate(savedInstanceState);
+
         setContentView(LAYOUT);
 
         // Google Analytics
@@ -151,7 +156,9 @@ public class SettingsActivity extends AppCompatActivity implements BillingProces
     }
 
     @Override
-    public void onBillingError(int errorCode, Throwable error) {}
+    public void onBillingError(int errorCode, Throwable error) {
+        Crashlytics.logException(error);
+    }
 
     @Override
     public void onPurchaseHistoryRestored() {}
@@ -203,7 +210,7 @@ public class SettingsActivity extends AppCompatActivity implements BillingProces
                 String textPrice = price + " " + currency;
                 final String buttonText = getString(R.string.button_ads_disable) + " " + textPrice;
 
-                if (!settings.getString(Constants.APP_PREFERENCES_ADS_DISABLE_PRICE, "").equals(textPrice)) {
+                if (!textPrice.equals(settings.getString(Constants.APP_PREFERENCES_ADS_DISABLE_PRICE, ""))) {
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString(Constants.APP_PREFERENCES_ADS_DISABLE_PRICE, textPrice);
                     editor.apply();
@@ -274,6 +281,7 @@ public class SettingsActivity extends AppCompatActivity implements BillingProces
         try {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
         } catch (ActivityNotFoundException e) {
+            Crashlytics.logException(e);
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
         }
     }
