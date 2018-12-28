@@ -365,6 +365,7 @@ public class Fragment extends androidx.fragment.app.Fragment {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    Crashlytics.logException(error);
                     Crashlytics.log(1, "SEND_DELETE_QUERY_TO_DB", error.getMessage());
                 }
             });
@@ -393,6 +394,7 @@ public class Fragment extends androidx.fragment.app.Fragment {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    Crashlytics.logException(error);
                     Crashlytics.log(1, "SEND_QUERY_TO_DB", error.getMessage());
                 }
             });
@@ -479,6 +481,7 @@ public class Fragment extends androidx.fragment.app.Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Crashlytics.logException(error);
                 Crashlytics.log(1, "GET_XML", error.getMessage());
                 progressDialogDismiss();
                 setErrorTextAndButton();
@@ -526,6 +529,7 @@ public class Fragment extends androidx.fragment.app.Fragment {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    Crashlytics.logException(error);
                     Crashlytics.log(1, "GET_QUERY_FROM_SERVER", error.getMessage());
                 }
             });
@@ -722,6 +726,7 @@ public class Fragment extends androidx.fragment.app.Fragment {
                     parser.next();
                 }
             } catch (XmlPullParserException | IOException e) {
+                Crashlytics.logException(e);
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -729,7 +734,6 @@ public class Fragment extends androidx.fragment.app.Fragment {
                         setErrorTextAndButton();
                     }
                 });
-                Crashlytics.logException(e);
             }
             return list;
         }
@@ -800,11 +804,11 @@ public class Fragment extends androidx.fragment.app.Fragment {
 
     private boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = null;
-        if (cm != null) {
-            netInfo = cm.getActiveNetworkInfo();
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if (networkInfo == null) {
+            return false;
         }
-        return netInfo != null && netInfo.isConnectedOrConnecting();
+        return networkInfo.isConnectedOrConnecting();
     }
 
     private void setErrorTextAndButton(){

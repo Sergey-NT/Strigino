@@ -17,7 +17,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
@@ -68,7 +67,7 @@ public class AppController extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        configureCrashReporting();
+        Fabric.with(this, new Crashlytics());
         mInstance = this;
 
         settings = getSharedPreferences(Constants.APP_PREFERENCES, MODE_PRIVATE);
@@ -113,13 +112,6 @@ public class AppController extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
-    }
-
-    private void configureCrashReporting() {
-        CrashlyticsCore crashlyticsCore = new CrashlyticsCore.Builder()
-                .disabled(BuildConfig.DEBUG)
-                .build();
-        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build(), new Crashlytics());
     }
 
     private void setLocale() {
