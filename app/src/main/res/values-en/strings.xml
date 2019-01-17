@@ -9,7 +9,7 @@
     <string name="button_repeat">Try again</string>
     <string name="dialog_title_new_version">New version</string>
     <string name="dialog_title">Info</string>
-    <string name="about_text_content">Data source: <a href="http://www.airportnn.ru" title="www.airportnn.ru">www.airportnn.ru</a></string>
+    <string name="about_text_content">Data source: <a href="http://old.goj.aero" title="old.goj.aero">old.goj.aero</a></string>
     <string name="button_ads_disable_recovery">Restore purchase</string>
     <string name="tabs_item_arrival">Arrival</string>
     <string name="tabs_item_departure">Departure</string>
